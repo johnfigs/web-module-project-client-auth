@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios';
+
+import axiosWithAuth from '../utils/axiosWithAuth';
 
 class AddForm extends React.Component {
   state = {
@@ -13,29 +14,30 @@ class AddForm extends React.Component {
 
   handleChange = e => {
     this.setState({
-      credentials: {
+      friend: {
         ...this.state.friend,
         [e.target.name]: e.target.value
       }
     });
   };
 
-//   login = e => {
-//     e.preventDefault();
-//     axios.post('http://localhost:5000/api/login', this.state.credentials)
-//       .then(res => {
-//         localStorage.setItem("token", res.data.payload);
-//         this.props.history.push('/ListFriends');
-//       })
-//       .catch(err=> {
-//         console.log(err);
-//       })
-//   };
+  submitFriend = e => {
+    e.preventDefault();
+    axiosWithAuth()
+    .post('/friends', this.state.friend)
+      .then(res => {
+        console.log(res)
+        this.props.history.push('/ListFriends');
+      })
+      .catch(err=> {
+        console.log(err);
+      })
+  };
 
   render() {
     return (
       <div>
-        <form onSubmit={this.login}>
+        <form onSubmit={this.submitFriend}>
           <input
             type="text"
             name="name"
