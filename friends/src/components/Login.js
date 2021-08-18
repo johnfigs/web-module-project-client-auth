@@ -10,7 +10,6 @@ class Login extends React.Component {
   };
 
   handleChange = e => {
-    console.log([e.target.name] + ' ' + e.target.value)
     this.setState({
       credentials: {
         ...this.state.credentials,
@@ -21,21 +20,14 @@ class Login extends React.Component {
 
   login = e => {
     e.preventDefault();
-    //1. Make an axios request to our login route.
-    //2. If request is valid, get the token.
-    //3. Save the token from the request in localStorage.
-    //4. if error, console.log error
-    
     axios.post('http://localhost:5000/api/login', this.state.credentials)
       .then(res => {
-          console.log(res);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("username", res.data.username);
-        this.props.history.push('/protected');
+        localStorage.setItem("token", res.data.payload);
+        this.props.history.push('/ListFriends');
       })
       .catch(err=> {
         console.log(err);
-      });
+      })
   };
 
   render() {

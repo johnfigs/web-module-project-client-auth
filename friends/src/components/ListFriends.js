@@ -1,6 +1,7 @@
 import React from 'react';
-import Loader from 'react-loader-spinner';
 import axiosWithAuth from './../utils/axiosWithAuth';
+
+import Friend from './Friend';
 
 class ListFriends extends React.Component {
     state = {
@@ -15,15 +16,24 @@ class ListFriends extends React.Component {
         axiosWithAuth()
         .get('/friends')
         .then(res => {
-            console.log(res);
+            this.setState({
+                friends: res.data
+            })
         })
         .catch(err=> {
             console.log(err);
         })
+        
     }
     render() {
         return(
-            <div>In List Friends</div>
+            <div>
+                <p>Your friends are:</p>
+                {this.state.friends.map(friend => (
+                    <Friend key={friend.id} friend={friend}/>
+                ))}
+            </div>
+            
         )
     }
 }
